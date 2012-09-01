@@ -17,7 +17,6 @@ module.exports = function (opts) {
       var d = 'rgb(' + mrcolor().rgb() + ')'
       if(!series[key]) {
         series[key] = new smoothie.TimeSeries()
-        console.log('add-series', key, value, timestamp)
         chart.addTimeSeries(series[key], {
           strokeStyle: d, lineWidth: 2
         })
