@@ -10,7 +10,7 @@ module.exports = function (opts) {
 
 
   var t =  through(function (data) {
-    var timestamp = data._timestamp || data.timestamp || date.time || data.date || Date.now()
+    var timestamp = data._timestamp || data.timestamp || data.time || data.date || Date.now()
 
     var snap = {timestamp: timestamp}
 
