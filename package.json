@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "smoothie": "0.0.0",
-    "through": "~1.0.0"
+    "through": "~1.0.0",
+    "mrcolor": "0.0.1"
   },
   "devDependencies": {
     "tap": "0.3.0"

@@ -1,22 +1,30 @@
 
 var smoothie = require('smoothie')
 var through = require('through')
+var mrcolor = require('mrcolor')()
 
 module.exports = function (opts) {
 
   var series = {}
   var chart = new smoothie.SmoothieChart(opts.chart)
 
-  function add(key, value, ts) {
-    if(!series[key]) {
-      series[key] = new smoothie.TimeSeries()
-      chart.addTimeSeries(series[key])
-    }
-    series[key].append(ts, value)
-  }
 
   var t =  through(function (data) {
-    var timestamp = data._timestamp || data.timestamp || Date.now()
+    var timestamp = data._timestamp || data.timestamp || date.time || data.date || Date.now()
+
+    var snap = {timestamp: timestamp}
+
+    function add(key, value, ts) {
+      var d = 'rgb(' + mrcolor().rgb() + ')'
+      if(!series[key]) {
+        series[key] = new smoothie.TimeSeries()
+        chart.addTimeSeries(series[key], {
+          strokeStyle: d, lineWidth: 2
+        })
+      }
+      snap[key] = value
+      series[key].append(ts, value)
+    }
 
     function firstNumber (o, names) {
       for(var i in names)
@@ -34,6 +42,7 @@ module.exports = function (opts) {
         firstNumber(value, ['mean', 'rate', 'value'])
       }
     }
+    this.emit('data', snap)
   })
 
   t.chart = chart

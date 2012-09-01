@@ -19,6 +19,6 @@ from(function (i, next) {
   setTimeout(next, 500)
 }).pipe(SmoothieStream({
   canvas: document.getElementById('canvas'),
-  chart: {millisPerPixel: 200}
+  chart: {millisPerPixel: 20}
 }))
 
