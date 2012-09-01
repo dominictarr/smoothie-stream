@@ -6,30 +6,30 @@ var mrcolor = require('mrcolor')()
 module.exports = function (opts) {
 
   var series = {}
-  var chart = new smoothie.SmoothieChart(opts.chart)
-
+  var chart = new smoothie.SmoothieChart(opts)
 
   var t =  through(function (data) {
     var timestamp = data._timestamp || data.timestamp || data.time || data.date || Date.now()
 
     var snap = {timestamp: timestamp}
 
-    function add(key, value, ts) {
+    function add(key, value) {
       var d = 'rgb(' + mrcolor().rgb() + ')'
       if(!series[key]) {
         series[key] = new smoothie.TimeSeries()
+        console.log('add-series', key, value, timestamp)
         chart.addTimeSeries(series[key], {
           strokeStyle: d, lineWidth: 2
         })
       }
       snap[key] = value
-      series[key].append(ts, value)
+      series[key].append(timestamp, value)
     }
 
     function firstNumber (o, names) {
       for(var i in names)
         if('number' === typeof o[names[i]])
-           return add(key, o[names[i]], timestamp)
+           return add(key, o[names[i]])
     }
 
     for(var key in data) {
@@ -51,7 +51,6 @@ module.exports = function (opts) {
   t.streamTo = function (canvas, delay) {
     t.chart.streamTo(canvas, delay)
   }
-
   if(opts.canvas)
     t.streamTo(opts.canvas, opts.delay || 1e3)
 
